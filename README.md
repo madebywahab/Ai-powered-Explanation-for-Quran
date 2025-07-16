@@ -1,0 +1,1 @@
+# Ai-powered-Explanation-for-Quran
