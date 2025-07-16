@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran Translation & Explanation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fef9e7 0%, #f8f4e6 25%, #fff5cd 50%, #fdf4c4 75%, #fcf1b6 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            position: relative;
+        }
+
+        /* Floating Islamic patterns */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(184, 134, 11, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(146, 64, 14, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(217, 119, 6, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.2);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(184, 134, 11, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #92400e 0%, #b45309 25%, #d97706 50%, #f59e0b 75%, #fbbf24 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            animation: headerGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes headerGlow {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 1.2em;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        }
+
+        .controls {
+            padding: 35px;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-bottom: 2px solid rgba(184, 134, 11, 0.1);
+            position: relative;
+        }
+
+        .controls::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fbbf24, transparent);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #92400e;
+            font-size: 1.1em;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(184, 134, 11, 0.2);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            color: #92400e;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #d97706;
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #92400e 0%, #b45309 25%, #d97706 50%, #f59e0b 75%, #fbbf24 100%);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(146, 64, 14, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(146, 64, 14, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .load-more-btn {
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 25%, #0ea5e9 50%, #38bdf8 75%, #7dd3fc 100%);
+            margin: 30px auto;
+            display: block;
+            box-shadow: 0 8px 25px rgba(3, 105, 161, 0.3);
+        }
+
+        .load-more-btn:hover {
+            box-shadow: 0 15px 35px rgba(3, 105, 161, 0.4);
+        }
+
+        .content {
+            padding: 35px;
+            background: linear-gradient(135deg, #fffbeb 0%, rgba(255,255,255,0.8) 100%);
+        }
+
+        .verse-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+            border-radius: 25px;
+            padding: 35px;
+            margin-bottom: 35px;
+            border: 2px solid rgba(184, 134, 11, 0.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .verse-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+        }
+
+        .verse-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(217, 119, 6, 0.05) 0%, transparent 50%);
+            animation: cardGlow 12s ease-in-out infinite;
+        }
+
+        @keyframes cardGlow {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            33% { transform: rotate(120deg) scale(1.1); }
+            66% { transform: rotate(240deg) scale(0.9); }
+        }
+
+        .verse-arabic {
+            font-size: 2.2em;
+            line-height: 2;
+            text-align: right;
+            margin-bottom: 25px;
+            color: #92400e;
+            font-family: 'Times New Roman', serif;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(255, 255, 255, 0.8) 100%);
+            border-radius: 20px;
+            border: 2px solid rgba(251, 191, 36, 0.15);
+            position: relative;
+            z-index: 1;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .verse-translation {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #374151;
+            font-style: italic;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(254, 243, 199, 0.3) 100%);
+            border-radius: 20px;
+            border-left: 5px solid #0ea5e9;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .verse-explanation {
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            margin-top: 25px;
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .verse-explanation h4 {
+            color: #16a34a;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .verse-explanation h4::before {
+            content: '✨';
+            font-size: 1.3em;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .explanation-content {
+            line-height: 1.9;
+            color: #374151;
+            font-size: 1.1em;
+        }
+
+        .explanation-content p {
+            margin-bottom: 18px;
+            text-align: justify;
+        }
+
+        .explanation-content .highlight {
+            background: linear-gradient(120deg, rgba(251, 191, 36, 0.3) 0%, rgba(251, 191, 36, 0.1) 100%);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .actionable-steps {
+            background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%);
+            padding: 25px;
+            border-radius: 18px;
+            margin-top: 25px;
+            border-left: 5px solid #0ea5e9;
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.1);
+        }
+
+        .actionable-steps h5 {
+            color: #0369a1;
+            margin-bottom: 18px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .actionable-steps h5::before {
+            content: '🎯';
+            font-size: 1.2em;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .actionable-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .actionable-steps li {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 249, 255, 0.6) 100%);
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border-left: 4px solid #0ea5e9;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .actionable-steps li::before {
+            content: '→';
+            color: #0ea5e9;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        .actionable-steps li:hover {
+            transform: translateX(8px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.2);
+        }
+
+        .daily-connection {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 25px;
+            border-radius: 18px;
+            margin-top: 20px;
+            border-left: 5px solid #f59e0b;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.1);
+        }
+
+        .daily-connection h5 {
+            color: #d97706;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .daily-connection h5::before {
+            content: '🌟';
+            font-size: 1.2em;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .daily-connection p {
+            color: #92400e;
+            font-style: italic;
+            line-height: 1.7;
+            font-size: 1.05em;
+        }
+
+        .verse-number {
+            background: linear-gradient(135deg, #92400e 0%, #d97706 50%, #fbbf24 100%);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 20px rgba(146, 64, 14, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #92400e;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(251, 191, 36, 0.3);
+            border-top: 4px solid #fbbf24;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: #b91c1c;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 5px solid #ef4444;
+            box-shadow: 0 8px 25px rgba(185, 28, 28, 0.1);
+        }
+
+        .row {
+            display: flex;
+            gap: 25px;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        .api-info {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .api-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #22c55e, transparent);
+        }
+
+        .api-info h4 {
+            color: #15803d;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2em;
+        }
+
+        .api-info p {
+            color: #166534;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .api-info a {
+            color: #0c5460;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .api-info a:hover {
+            text-decoration: underline;
+        }
+
+        .verse-counter {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid rgba(14, 165, 233, 0.2);
+            box-shadow: 0 5px 15px rgba(14, 165, 233, 0.1);
+        }
+
+        .verse-counter h3 {
+            color: #0369a1;
+            margin: 0;
+            font-size: 1.3em;
+        }
+
+        .reading-progress {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #d97706, #f59e0b);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(217, 119, 6, 0.3);
+        }
+
+        .floating-actions {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #92400e 0%, #d97706 100%);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(146, 64, 14, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(146, 64, 14, 0.4);
+        }
+
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            right: 50%;
+            transform: translateX(50%);
+            background: #374151;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .tooltip:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .verse-arabic {
+                font-size: 1.8em;
+            }
+            
+            .verse-card {
+                padding: 25px;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 20px;
+            }
+            
+            .floating-actions {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Quran Translation & Explanation</h1>
+            <p>Discover the beautiful verses with engaging explanations</p>
+        </div>
+
+        <div class="controls">
+            <div class="api-info">
+                <h4>🚀 AI-Powered Explanations with OpenRouter</h4>
+                <p>Using your OpenRouter API for high-quality explanations!</p>
+                <p>With intelligent fallback system - always gets explanations.</p>
+            </div>
+            
+            <div class="verse-counter" id="verseCounter">
+                <h3>📖 Verses Loaded: <span id="verseCount">0</span></h3>
+            </div>
+            
+            <div class="reading-progress">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="surahSelect">Select Surah:</label>
+                        <select id="surahSelect">
+                            <option value="">Loading surahs...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="verseNumber">Verse Number (optional):</label>
+                        <input type="number" id="verseNumber" min="1" placeholder="Enter verse number or leave blank for first 3 verses">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="versesPerLoad">Verses per load:</label>
+                        <select id="versesPerLoad">
+                            <option value="1">1 verse</option>
+                            <option value="3" selected>3 verses</option>
+                            <option value="5">5 verses</option>
+                            <option value="10">10 verses</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="explanationDepth">Explanation Depth:</label>
+                        <select id="explanationDepth">
+                            <option value="brief">Brief</option>
+                            <option value="detailed" selected>Detailed</option>
+                            <option value="comprehensive">Comprehensive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="fetchVerse()">Get Verse & Explanation</button>
+        </div>
+
+        <div class="content" id="content">
+            <div class="loading" id="initialMessage">
+                <div class="spinner"></div>
+                <p>Welcome! Select a surah to get started with AI-powered explanations.</p>
+            </div>
+        </div>
+        
+        <div id="loadMoreContainer" style="display: none; text-align: center; padding: 20px;">
+            <button class="btn load-more-btn" id="loadMoreBtn" onclick="loadMoreVerses()">
+                Load More Verses 📖
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+        <button class="floating-btn tooltip" data-tooltip="Scroll to Top" onclick="scrollToTop()">↑</button>
+        <button class="floating-btn tooltip" data-tooltip="Random Verse" onclick="getRandomVerse()">🎲</button>
+        <button class="floating-btn tooltip" data-tooltip="Bookmark" onclick="toggleBookmark()">🔖</button>
+        <button class="floating-btn tooltip" data-tooltip="Share" onclick="shareVerse()">📤</button>
+    </div>
+
+    <script>
+        let surahs = [];
+        let currentSurah = null;
+        let currentVerseIndex = 0;
+        let totalVersesLoaded = 0;
+        let bookmarkedVerses = JSON.parse(localStorage.getItem('bookmarkedVerses') || '[]');
+        
+        // Keep track of failed attempts for better error handling
+        let apiAttempts = 0;
+
+        // Load surahs on page load
+        window.addEventListener('load', loadSurahs);
+
+        async function loadSurahs() {
+            try {
+                const response = await fetch('https://api.alquran.cloud/v1/surah');
+                const data = await response.json();
+                
+                if (data.code === 200) {
+                    surahs = data.data;
+                    populateSurahSelect();
+                } else {
+                    throw new Error('Failed to load surahs');
+                }
+            } catch (error) {
+                console.error('Error loading surahs:', error);
+                document.getElementById('surahSelect').innerHTML = '<option value="">Error loading surahs</option>';
+            }
+        }
+
+        function populateSurahSelect() {
+            const select = document.getElementById('surahSelect');
+            select.innerHTML = '<option value="">Select a Surah</option>';
+            
+            surahs.forEach(surah => {
+                const option = document.createElement('option');
+                option.value = surah.number;
+                option.textContent = `${surah.number}. ${surah.englishName} (${surah.name})`;
+                select.appendChild(option);
+            });
+        }
+
+        async function fetchVerse() {
+            const surahNumber = document.getElementById('surahSelect').value;
+            const verseNumber = document.getElementById('verseNumber').value;
+            const versesPerLoad = parseInt(document.getElementById('versesPerLoad').value);
+            
+            if (!surahNumber) {
+                showError('Please select a surah');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                // Fetch both Arabic and English translation
+                const [arabicResponse, englishResponse] = await Promise.all([
+                    fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`),
+                    fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/en.asad`)
+                ]);
+                
+                const arabicData = await arabicResponse.json();
+                const englishData = await englishResponse.json();
+                
+                if (arabicData.code !== 200 || englishData.code !== 200) {
+                    throw new Error('Failed to fetch surah data');
+                }
+                
+                const arabicSurah = arabicData.data;
+                const englishSurah = englishData.data;
+                
+                currentSurah = { arabic: arabicSurah, english: englishSurah };
+                currentVerseIndex = 0;
+                totalVersesLoaded = 0;
+                
+                let versesToShow = arabicSurah.ayahs;
+                let englishVersesToShow = englishSurah.ayahs;
+                
+                // Filter to specific verse if requested
+                if (verseNumber) {
+                    const arabicVerse = versesToShow.find(ayah => ayah.numberInSurah == verseNumber);
+                    const englishVerse = englishVersesToShow.find(ayah => ayah.numberInSurah == verseNumber);
+                    if (arabicVerse && englishVerse) {
+                        versesToShow = [arabicVerse];
+                        englishVersesToShow = [englishVerse];
+                        currentVerseIndex = verseNumber - 1;
+                    } else {
+                        throw new Error(`Verse ${verseNumber} not found in this surah`);
+                    }
+                } else {
+                    // Show specified number of verses from the beginning
+                    if (versesToShow.length > versesPerLoad) {
+                        versesToShow = versesToShow.slice(0, versesPerLoad);
+                        englishVersesToShow = englishVersesToShow.slice(0, versesPerLoad);
+                    }
+                    currentVerseIndex = versesPerLoad;
+                }
+                
+                await displayVersesWithExplanations(versesToShow, englishVersesToShow, arabicSurah.englishName);
+                
+                // Show load more button if there are more verses
+                if (currentVerseIndex < arabicSurah.ayahs.length && !verseNumber) {
+                    document.getElementById('loadMoreContainer').style.display = 'block';
+                } else {
+                    document.getElementById('loadMoreContainer').style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Error fetching verse: ' + error.message);
+            }
+        }
+
+        async function loadMoreVerses() {
+            if (!currentSurah) return;
+            
+            const versesPerLoad = parseInt(document.getElementById('versesPerLoad').value);
+            const remainingVerses = currentSurah.arabic.ayahs.length - currentVerseIndex;
+            const versesToLoad = Math.min(versesPerLoad, remainingVerses);
+            
+            if (versesToLoad <= 0) {
+                document.getElementById('loadMoreContainer').style.display = 'none';
+                return;
+            }
+            
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            loadMoreBtn.disabled = true;
+            loadMoreBtn.innerHTML = 'Loading... ⏳';
+            
+            try {
+                const arabicVersesToShow = currentSurah.arabic.ayahs.slice(currentVerseIndex, currentVerseIndex + versesToLoad);
+                const englishVersesToShow = currentSurah.english.ayahs.slice(currentVerseIndex, currentVerseIndex + versesToLoad);
+                
+                await displayVersesWithExplanations(arabicVersesToShow, englishVersesToShow, currentSurah.arabic.englishName, true);
+                
+                currentVerseIndex += versesToLoad;
+                
+                // Hide load more button if no more verses
+                if (currentVerseIndex >= currentSurah.arabic.ayahs.length) {
+                    document.getElementById('loadMoreContainer').style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.error('Error loading more verses:', error);
+                showError('Error loading more verses: ' + error.message);
+            } finally {
+                loadMoreBtn.disabled = false;
+                loadMoreBtn.innerHTML = 'Load More Verses 📖';
+            }
+        }
+
+        async function displayVersesWithExplanations(arabicVerses, englishVerses, surahName, append = false) {
+            const content = document.getElementById('content');
+            
+            if (!append) {
+                content.innerHTML = '';
+                totalVersesLoaded = 0;
+            }
+            
+            for (let i = 0; i < arabicVerses.length; i++) {
+                const arabicVerse = arabicVerses[i];
+                const englishVerse = englishVerses[i];
+                
+                const verseCard = document.createElement('div');
+                verseCard.className = 'verse-card';
+                
+                verseCard.innerHTML = `
+                    <div class="verse-number">Surah ${surahName} - Verse ${arabicVerse.numberInSurah}</div>
+                    <div class="verse-arabic">${arabicVerse.text}</div>
+                    <div class="verse-translation">"${englishVerse.text}"</div>
+                    <div class="verse-explanation">
+                        <h4>Deep Wisdom & Guidance</h4>
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Generating insightful explanation...</p>
+                        </div>
+                    </div>
+                `;
+                
+                content.appendChild(verseCard);
+                totalVersesLoaded++;
+                updateVerseCounter();
+                updateProgressBar();
+                
+                // Get explanation for this verse
+                const explanation = await getVerseExplanation(arabicVerse.text, englishVerse.text);
+                const explanationDiv = verseCard.querySelector('.verse-explanation');
+                explanationDiv.innerHTML = explanation;
+                
+                // Add longer delay between requests to avoid rate limiting
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+        }
+
+        async function getVerseExplanation(arabicText, englishText) {
+            const apiKey = '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';
+            
+            // Try multiple free models with enhanced prompt
+            const models = [
+                "meta-llama/llama-3.2-3b-instruct:free",
+                "mistralai/mistral-7b-instruct:free",
+                "huggingface/CodeLlama-7b-Instruct-hf:free",
+                "microsoft/DialoGPT-medium:free"
+            ];
+            
+            const explanationDepth = document.getElementById('explanationDepth').value;
+            let maxTokens = 300;
+            let systemPrompt = `You are an inspiring Islamic scholar who makes Quranic verses come alive for young Muslims. Your explanations should be:
+- Captivating and thought-provoking (like reading a great story)
+- Use modern examples and relatable situations
+- Include emotional connection and personal reflection
+- Provide 3-4 specific actionable steps
+- End with a meaningful daily connection
+- Use engaging language that draws readers in
+- Highlight key concepts with emphasis
+
+Format your response as:
+1. An engaging explanation (2-3 paragraphs)
+2. Actionable steps (3-4 practical bullet points)
+3. Daily connection (1 inspiring reflection)
+4. double check that its correct and is relevant to the verse`;
+
+            if (explanationDepth === 'brief') {
+                maxTokens = 200;
+                systemPrompt = `You are an Islamic scholar. Provide a brief, inspiring explanation of the Quranic verse with 2-3 actionable steps and a daily reflection. Keep it concise but meaningful.`;
+            } else if (explanationDepth === 'comprehensive') {
+                maxTokens = 500;
+                systemPrompt += `\n\nProvide a comprehensive explanation with historical context, deeper theological insights, and more detailed practical applications.`;
+            }
+            
+            // Try each model
+            for (const model of models) {
+                try {
+                    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${apiKey}`,
+                            'Content-Type': 'application/json',
+                            'HTTP-Referer': window.location.href,
+                            'X-Title': 'Quran Translation Website'
+                        },
+                        body: JSON.stringify({
+                            model: model,
+                            messages: [
+                                {
+                                    role: "system",
+                                    content: systemPrompt
+                                },
+                                {
+                                    role: "user",
+                                    content: `Explain this Quranic verse in an engaging way:\n\nArabic: "${arabicText}"\nEnglish: "${englishText}"\n\nMake it captivating, relatable, and actionable for young Muslims.`
+                                }
+                            ],
+                            max_tokens: maxTokens,
+                            temperature: 0.8
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.choices && data.choices[0] && data.choices[0].message) {
+                            const rawExplanation = data.choices[0].message.content.trim();
+                            if (rawExplanation && rawExplanation.length > 20) {
+                                return formatExplanation(rawExplanation);
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.log(`Model ${model} failed, trying next...`);
+                }
+                
+                // Small delay between model attempts
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            // If all AI models fail, generate enhanced contextual explanation
+            return generateEnhancedExplanation(englishText);
+        }
+
+        function formatExplanation(rawText) {
+            // Split the explanation into parts
+            const parts = rawText.split('\n\n');
+            let formattedHTML = '<h4>Deep Wisdom & Guidance</h4>';
+            
+            let explanationParts = [];
+            let actionSteps = [];
+            let dailyConnection = '';
+            
+            // Parse the content
+            for (let part of parts) {
+                if (part.toLowerCase().includes('action') || part.toLowerCase().includes('step') || part.includes('•') || part.includes('-')) {
+                    // Extract action steps
+                    const steps = part.split(/[•\-\n]/).filter(s => s.trim().length > 10);
+                    actionSteps.push(...steps);
+                } else if (part.toLowerCase().includes('daily') || part.toLowerCase().includes('reflection') || part.toLowerCase().includes('remember')) {
+                    dailyConnection = part;
+                } else if (part.trim().length > 20) {
+                    explanationParts.push(part);
+                }
+            }
+            
+            // Build formatted explanation
+            formattedHTML += '<div class="explanation-content">';
+            
+            // Main explanation
+            for (let exp of explanationParts) {
+                formattedHTML += `<p>${highlightKeyTerms(exp)}</p>`;
+            }
+            
+            formattedHTML += '</div>';
+            
+            // Action steps
+            if (actionSteps.length > 0) {
+                formattedHTML += '<div class="actionable-steps">';
+                formattedHTML += '<h5>Take Action Today</h5>';
+                formattedHTML += '<ul>';
+                for (let step of actionSteps.slice(0, 4)) {
+                    if (step.trim().length > 10) {
+                        formattedHTML += `<li>${step.trim()}</li>`;
+                    }
+                }
+                formattedHTML += '</ul></div>';
+            }
+            
+            // Daily connection
+            if (dailyConnection) {
+                formattedHTML += '<div class="daily-connection">';
+                formattedHTML += '<h5>Daily Reflection</h5>';
+                formattedHTML += `<p>${dailyConnection}</p>`;
+                formattedHTML += '</div>';
+            }
+            
+            return formattedHTML;
+        }
+
+        function highlightKeyTerms(text) {
+            const keyTerms = ['Allah', 'faith', 'prayer', 'patience', 'mercy', 'forgiveness', 'guidance', 'wisdom', 'gratitude', 'trust', 'hope', 'compassion', 'righteous', 'good deeds'];
+            let highlightedText = text;
+            
+            keyTerms.forEach(term => {
+                const regex = new RegExp(`\\b${term}\\b`, 'gi');
+                highlightedText = highlightedText.replace(regex, `<span class="highlight">${term}</span>`);
+            });
+            
+            return highlightedText;
+        }
+        
+        function generateEnhancedExplanation(englishText) {
+            const text = englishText.toLowerCase();
+            
+            let explanationHTML = '<h4>Deep Wisdom & Guidance</h4>';
+            explanationHTML += '<div class="explanation-content">';
+            
+            let mainExplanation = "This powerful verse from the Quran carries profound wisdom that can transform how we live our daily lives. ";
+            let actionSteps = [];
+            let dailyReflection = '';
+            
+            // Enhanced content analysis
+            if (text.includes('allah') || text.includes('god')) {
+                mainExplanation += "It reminds us of our beautiful connection with Allah, the Most Merciful. Think of it like having the best friend who's always there for you - Allah is infinitely better than that. ";
+                actionSteps.push("Start each day by saying 'Bismillah' (In the name of Allah) before important tasks");
+                actionSteps.push("Take 2 minutes during lunch break to remember Allah and feel His presence");
+                
+                if (text.includes('mercy') || text.includes('merciful')) {
+                    mainExplanation += "The verse beautifully highlights Allah's endless mercy - like a mother's love multiplied by infinity. When you mess up, don't despair. Allah's mercy is always there, waiting for your sincere return. ";
+                    actionSteps.push("When you make a mistake, immediately ask for forgiveness and trust in Allah's mercy");
+                    actionSteps.push("Show mercy to others just like you want Allah to show mercy to you");
+                }
+            }
+            
+            if (text.includes('patient') || text.includes('patience')) {
+                mainExplanation += "This verse teaches us the superpower of patience - not just waiting, but staying positive while waiting. It's like planting seeds and trusting they'll grow into beautiful flowers. ";
+                actionSteps.push("When stuck in traffic or waiting in line, use it as patience practice time");
+                actionSteps.push("Before reacting angrily, count to 10 and ask 'What would patience look like here?'");
+                dailyReflection = "Every challenge is Allah's way of building your patience muscles. Embrace the wait, trust the process.";
+            }
+            
+            if (text.includes('believe') || text.includes('faith')) {
+                mainExplanation += "Faith isn't just believing - it's living with unshakeable confidence that Allah has your back. It's like having a GPS that never fails, guiding you through life's confusing moments. ";
+                actionSteps.push("Read one verse of Quran daily and reflect on its meaning");
+                actionSteps.push("Surround yourself with friends who strengthen your faith, not weaken it");
+                dailyReflection = "Your faith is like a tree - water it daily with remembrance of Allah, and watch it grow strong.";
+            }
+            
+            if (text.includes('righteous') || text.includes('good')) {
+                mainExplanation += "The verse encourages us to be people of good deeds - not for show, but because goodness creates ripples of positive change everywhere. Small acts of kindness are like drops in the ocean of Allah's pleasure. ";
+                actionSteps.push("Do one unexpected act of kindness daily (help parents, text a friend, smile at strangers)");
+                actionSteps.push("Before sleeping, reflect on three good deeds you did that day");
+                dailyReflection = "Every good deed is an investment in your eternal happiness. Start small, stay consistent.";
+            }
+            
+            // Default action steps if none generated
+            if (actionSteps.length === 0) {
+                actionSteps = [
+                    "Read this verse again slowly and let its meaning sink into your heart",
+                    "Share this wisdom with a friend or family member",
+                    "Apply one lesson from this verse in your daily routine",
+                    "Make dua (prayer) asking Allah to help you understand and live by this guidance"
+                ];
+            }
+            
+            if (!dailyReflection) {
+                dailyReflection = "Every verse in the Quran is like a personal letter from Allah to you. Read it, live it, and let it transform your heart.";
+            }
+            
+            mainExplanation += "This isn't just ancient wisdom - it's your roadmap to a meaningful, joyful life that pleases Allah and brings you genuine happiness.";
+            
+            // Format the HTML
+            explanationHTML += `<p>${highlightKeyTerms(mainExplanation)}</p>`;
+            explanationHTML += '</div>';
+            
+            // Add action steps
+            explanationHTML += '<div class="actionable-steps">';
+            explanationHTML += '<h5>Take Action Today</h5>';
+            explanationHTML += '<ul>';
+            for (let step of actionSteps.slice(0, 4)) {
+                explanationHTML += `<li>${step}</li>`;
+            }
+            explanationHTML += '</ul></div>';
+            
+            // Add daily reflection
+            explanationHTML += '<div class="daily-connection">';
+            explanationHTML += '<h5>Daily Reflection</h5>';
+            explanationHTML += `<p>${dailyReflection}</p>`;
+            explanationHTML += '</div>';
+            
+            return explanationHTML;
+        }
+
+        function updateVerseCounter() {
+            document.getElementById('verseCount').textContent = totalVersesLoaded;
+        }
+
+        function updateProgressBar() {
+            if (currentSurah) {
+                const progress = (currentVerseIndex / currentSurah.arabic.ayahs.length) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('content').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading verses and generating explanations...</p>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            document.getElementById('content').innerHTML = `
+                <div class="error">
+                    <strong>Error:</strong> ${message}
+                </div>
+            `;
+        }
+
+        // Floating action button functions
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function getRandomVerse() {
+            if (surahs.length === 0) return;
+            
+            const randomSurah = surahs[Math.floor(Math.random() * surahs.length)];
+            document.getElementById('surahSelect').value = randomSurah.number;
+            
+            // Get random verse number (1 to total verses in surah)
+            try {
+                const response = await fetch(`https://api.alquran.cloud/v1/surah/${randomSurah.number}`);
+                const data = await response.json();
+                if (data.code === 200) {
+                    const randomVerseNumber = Math.floor(Math.random() * data.data.ayahs.length) + 1;
+                    document.getElementById('verseNumber').value = randomVerseNumber;
+                    fetchVerse();
+                }
+            } catch (error) {
+                console.error('Error getting random verse:', error);
+                fetchVerse(); // Fallback to first verses
+            }
+        }
+
+        function toggleBookmark() {
+            const currentVerseCards = document.querySelectorAll('.verse-card');
+            if (currentVerseCards.length > 0) {
+                // For simplicity, bookmark the first visible verse
+                const firstCard = currentVerseCards[0];
+                const verseNumber = firstCard.querySelector('.verse-number').textContent;
+                const arabicText = firstCard.querySelector('.verse-arabic').textContent;
+                
+                const bookmark = {
+                    id: Date.now(),
+                    verseNumber,
+                    arabicText: arabicText.substring(0, 100) + '...',
+                    timestamp: new Date().toISOString()
+                };
+                
+                bookmarkedVerses.push(bookmark);
+                localStorage.setItem('bookmarkedVerses', JSON.stringify(bookmarkedVerses));
+                
+                alert('Verse bookmarked! 🔖');
+            }
+        }
+
+        function shareVerse() {
+            const currentVerseCards = document.querySelectorAll('.verse-card');
+            if (currentVerseCards.length > 0) {
+                const firstCard = currentVerseCards[0];
+                const verseNumber = firstCard.querySelector('.verse-number').textContent;
+                const translation = firstCard.querySelector('.verse-translation').textContent;
+                
+                const shareText = `${verseNumber}\n\n${translation}\n\nShared from Quran Translation & Explanation`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Quran Verse',
+                        text: shareText
+                    });
+                } else {
+                    // Fallback: copy to clipboard
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        alert('Verse copied to clipboard! 📤');
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>
